@@ -8,10 +8,14 @@ import Image from 'next/image'
 
 function StrollModel({ onError }: { onError: (error: Error) => void }) {
   const gltfUrl = `/api/proxy?url=${encodeURIComponent("https://jzyg8siqadeixyxx.public.blob.vercel-storage.com/Stroll-test-mdl-l83GNAIxbpbYkLmSHHI6yj8IrTIQT8.gltf")}`
-  const { scene } = useGLTF(gltfUrl)
+  const { scene, errors } = useGLTF(gltfUrl)
   const modelRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
+    if (errors) {
+      console.error("GLTF loading errors:", errors);
+      onError(new Error("Failed to load 3D model"));
+    }
     if (scene) {
       console.log("GLTF loaded successfully");
       scene.traverse((child) => {
@@ -22,7 +26,7 @@ function StrollModel({ onError }: { onError: (error: Error) => void }) {
       scene.scale.set(0.5, 0.5, 0.5)
       scene.position.set(0, -1, 0)
     }
-  }, [scene])
+  }, [scene, errors, onError])
 
   useFrame((state, delta) => {
     if (modelRef.current) {
@@ -66,9 +70,9 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (loading) {
-        handleError(new Error("Loading timeout"));
+        handleError(new Error("Loading timeout - please check your network connection and try again."));
       }
-    }, 30000);
+    }, 60000); // Increased to 60 seconds
 
     return () => clearTimeout(timer);
   }, [loading]);
