@@ -1,14 +1,10 @@
 "use client";
+
 import { useState, useRef, useEffect, Suspense } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, Environment, useGLTF } from "@react-three/drei"
-import { Button } from "@/components/ui/button"
-import { Outfit } from 'next/font/google'
 import * as THREE from 'three'
 import Image from 'next/image'
-import { Loader2 } from 'lucide-react'
-
-const outfit = Outfit({ subsets: ['latin'] })
 
 function StrollModel({ onError }: { onError: (error: Error) => void }) {
   const gltfUrl = `/api/proxy?url=${encodeURIComponent("https://jzyg8siqadeixyxx.public.blob.vercel-storage.com/Stroll-test-mdl-l83GNAIxbpbYkLmSHHI6yj8IrTIQT8.gltf")}`
@@ -19,13 +15,11 @@ function StrollModel({ onError }: { onError: (error: Error) => void }) {
   const modelRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
-    console.log("Attempting to load GLTF from:", gltfUrl);
     if (errors) {
       console.error("GLTF loading errors:", errors);
       onError(new Error("Failed to load 3D model"));
     }
     if (scene) {
-      console.log("GLTF loaded successfully");
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.material.side = THREE.DoubleSide
@@ -34,7 +28,7 @@ function StrollModel({ onError }: { onError: (error: Error) => void }) {
       scene.scale.set(0.5, 0.5, 0.5)
       scene.position.set(0, -1, 0)
     }
-  }, [scene, errors, onError, gltfUrl])
+  }, [scene, errors, onError])
 
   useFrame((state, delta) => {
     if (modelRef.current) {
@@ -80,13 +74,13 @@ export default function Component() {
       if (loading) {
         handleError(new Error("Loading timeout"));
       }
-    }, 30000); // 30 seconds timeout
+    }, 30000);
 
     return () => clearTimeout(timer);
   }, [loading]);
 
   return (
-    <div className={`relative w-full h-screen bg-gray-900 ${outfit.className}`}>
+    <div className="relative w-full h-screen bg-gray-900">
       {error || loading ? (
         <div className="absolute inset-0">
           <Image
@@ -121,17 +115,17 @@ export default function Component() {
           Stroll helps you take in your surroundings while you walk, instead of focusing on your screen. <br />
           Rediscover walking as a daily practice of self-care.
         </p>
-        <Button
+        <button
           className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-lg py-3 px-8 rounded-full transition-colors duration-200"
           onClick={() => alert("Thank you for your interest!")}
         >
           Learn More
-        </Button>
+        </button>
       </div>
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="w-8 h-8 text-yellow-400 animate-spin" />
+            <div className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
             <div className="text-xl font-semibold text-white">Loading 3D Experience...</div>
           </div>
         </div>
