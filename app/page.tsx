@@ -8,18 +8,15 @@ import Image from 'next/image'
 
 function StrollModel({ onError }: { onError: (error: Error) => void }) {
   const gltfUrl = `/api/proxy?url=${encodeURIComponent("https://jzyg8siqadeixyxx.public.blob.vercel-storage.com/Stroll-test-mdl-l83GNAIxbpbYkLmSHHI6yj8IrTIQT8.gltf")}`
-  const { scene, errors } = useGLTF(gltfUrl, undefined, (error) => {
+  const { scene } = useGLTF(gltfUrl, undefined, (error) => {
     console.error("GLTF loading error:", error);
     onError(error);
   })
   const modelRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
-    if (errors) {
-      console.error("GLTF loading errors:", errors);
-      onError(new Error("Failed to load 3D model"));
-    }
     if (scene) {
+      console.log("GLTF loaded successfully");
       scene.traverse((child) => {
         if (child instanceof THREE.Mesh) {
           child.material.side = THREE.DoubleSide
@@ -28,7 +25,7 @@ function StrollModel({ onError }: { onError: (error: Error) => void }) {
       scene.scale.set(0.5, 0.5, 0.5)
       scene.position.set(0, -1, 0)
     }
-  }, [scene, errors, onError])
+  }, [scene])
 
   useFrame((state, delta) => {
     if (modelRef.current) {
