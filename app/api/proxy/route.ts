@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 export async function GET(request: NextRequest) {
   const url = request.nextUrl.searchParams.get('url');
 
   if (!url) {
-    console.error('Proxy error: URL parameter is missing');
     return NextResponse.json({ error: 'URL parameter is required' }, { status: 400 });
   }
-
-  console.log('Attempting to fetch:', url);
 
   try {
     const response = await fetch(url, {
@@ -20,14 +15,11 @@ export async function GET(request: NextRequest) {
     });
 
     if (!response.ok) {
-      console.error(`Proxy error: Failed to fetch ${url}. Status: ${response.status} ${response.statusText}`);
-      return NextResponse.json({ error: `Failed to fetch: ${response.status} ${response.statusText}` }, { status: response.status });
+      throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
     }
 
     const contentType = response.headers.get('content-type');
     const body = await response.arrayBuffer();
-
-    console.log('Successfully fetched resource. Content-Type:', contentType);
 
     return new NextResponse(body, {
       headers: {
