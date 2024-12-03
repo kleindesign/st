@@ -32,7 +32,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="w-full h-screen overflow-x-hidden snap-x snap-mandatory font-outfit">
+    <div className="w-full h-screen overflow-x-hidden snap-x snap-mandatory">
       <div ref={el => sectionsRef.current[0] = el} className="relative w-screen h-screen flex flex-col items-center justify-center p-4 text-center snap-start bg-gray-900">
         <Image
           src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/stroll-CMuigFJpJyKwQELd1DQ2cPSysEnamS.png"
