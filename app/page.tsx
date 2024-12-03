@@ -8,10 +8,7 @@ import Image from 'next/image'
 
 function StrollModel({ onError }: { onError: (error: Error) => void }) {
   const gltfUrl = `/api/proxy?url=${encodeURIComponent("https://jzyg8siqadeixyxx.public.blob.vercel-storage.com/Stroll-test-mdl-l83GNAIxbpbYkLmSHHI6yj8IrTIQT8.gltf")}`
-  const { scene } = useGLTF(gltfUrl, undefined, (error) => {
-    console.error("GLTF loading error:", error);
-    onError(error);
-  })
+  const { scene } = useGLTF(gltfUrl)
   const modelRef = useRef<THREE.Group>(null)
 
   useEffect(() => {
@@ -56,7 +53,7 @@ function Scene({ onError }: { onError: (error: Error) => void }) {
   )
 }
 
-export default function Component() {
+export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
