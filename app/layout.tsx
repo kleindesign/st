@@ -1,12 +1,12 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
+import type { Metadata } from 'next'
+import { Outfit } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const outfit = Outfit({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Stroll Landing Page',
-  description: 'Find Your Way, Free Your Mind with Stroll',
+  description: 'Find your way, free your mind with Stroll',
 }
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={outfit.className}>{children}</body>
     </html>
   )
 }
